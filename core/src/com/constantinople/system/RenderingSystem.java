@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.annotations.Wire;
+import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Color;
@@ -14,7 +15,7 @@ import com.constantinople.component.Position;
 import com.constantinople.component.Velocity;
 
 @Wire
-public class RenderingSystem extends EntitySystem{
+public class RenderingSystem extends EntityProcessingSystem{
     private OrthographicCamera camera;
     private ShapeRenderer shapeRenderer;
 
@@ -29,8 +30,7 @@ public class RenderingSystem extends EntitySystem{
     }
 
     @Override
-    protected void processSystem() {
-        int[] entityIDs = getSubscription().getEntities().getData();
+    protected void begin(){
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -38,14 +38,11 @@ public class RenderingSystem extends EntitySystem{
         camera.update();
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.identity();
+    }
 
-        Entity entity = createFlyweightEntity();
-        // render each entity
-        for (int id : entityIDs) {
-            entity.id = id;
-            Position position = pm.get(entity);
-            shapeRenderer.circle(position.position.x, position.position.y, 10);
-        }
-
+    @Override
+    protected void process(Entity e) {
+        Position position = pm.get(e);
+        shapeRenderer.circle(position.position.x, position.position.y, 10);
     }
 }
