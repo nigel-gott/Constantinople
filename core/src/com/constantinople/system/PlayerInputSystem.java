@@ -14,20 +14,29 @@ import com.constantinople.component.Movable;
 
 @Wire
 public class PlayerInputSystem extends EntityProcessingSystem{
-
     ComponentMapper<Movable> vm;
+    ComponentMapper<Player> pm;
+
+    final static int rotationSpeed = 2;
+    final static int speedModifier = 100;
+
     final Vector2 left, right, up, down;
-    Vector2 velocity;
+    int rotationDelta;
+    int speed;
+
 
     private boolean changed;
 
     public PlayerInputSystem(){
         super(Aspect.all(Player.class));
-        velocity = new Vector2(0,0);
         left = new Vector2(-1,0);
         right = new Vector2(1,0);
         up = new Vector2(0,1);
         down = new Vector2(0,-1);
+
+        rotationDelta = 0;
+        speed = 0;
+
         changed = false;
 
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -45,23 +54,24 @@ public class PlayerInputSystem extends EntityProcessingSystem{
     }
 
     private void keyChange(int keycode, boolean isDown){
-        Vector2 original = velocity.cpy();
+        float orgSpeed = speed;
+        int orgRotationDelta = rotationDelta;
         int modifier = isDown ? 1 : -1;
         switch(keycode){
             case Input.Keys.A:
-                velocity.add(left.cpy().scl(modifier));
+                rotationDelta += modifier * rotationSpeed;
                 break;
             case Input.Keys.D:
-                velocity.add(right.cpy().scl(modifier));
+                rotationDelta += modifier * -rotationSpeed;
                 break;
             case Input.Keys.W:
-                velocity.add(up.cpy().scl(modifier));
+                speed += modifier * speedModifier;
                 break;
             case Input.Keys.S:
-                velocity.add(down.cpy().scl(modifier));
+                speed -= modifier * speedModifier;
                 break;
         }
-        changed = !(velocity.x == original.x && velocity.y == original.y);
+        changed = !(orgSpeed == speed && orgRotationDelta == rotationDelta);
     }
 
     @Override
@@ -71,8 +81,9 @@ public class PlayerInputSystem extends EntityProcessingSystem{
 
     @Override
     protected void process(Entity e) {
-        Movable v = vm.get(e);
-        v.acceleration.set(velocity.cpy());
+        Player p = pm.get(e);
+        p.rotationSpeed = rotationDelta;
+        p.speed = speed;
         changed = false;
     }
 

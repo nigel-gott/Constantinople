@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.constantinople.component.Positionable;
 import com.constantinople.component.Movable;
+import com.constantinople.util.PhysicsStepSystem;
 
 @Wire
 public class RenderingSystem extends EntityProcessingSystem{
@@ -22,7 +23,7 @@ public class RenderingSystem extends EntityProcessingSystem{
     private ComponentMapper<Positionable> pm;
     private ComponentMapper<Movable> mm;
 
-    private PhysicsSystem physicsSystem;
+    private PhysicsStepSystem physicsStepSystem;
 
     public RenderingSystem(OrthographicCamera camera) {
         super(Aspect.all(Positionable.class, Movable.class));
@@ -39,29 +40,27 @@ public class RenderingSystem extends EntityProcessingSystem{
         camera.update();
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.identity();
+        shapeRenderer.setColor(Color.BLUE);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
     }
 
     @Override
     protected void process(Entity e) {
-        Positionable position = pm.get(e);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.circle(position.position.x, position.position.y, 10);
-        shapeRenderer.end();
-        shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         Vector2 interpolatedPosition = interpolatePosition(e);
         shapeRenderer.circle(interpolatedPosition.x, interpolatedPosition.y, 10);
-        shapeRenderer.end();
     }
 
     private Vector2 interpolatePosition(Entity e){
-        float accumulator = physicsSystem.getAccumulator();
+        float accumulator = physicsStepSystem.getAccumulator();
         Movable m = mm.get(e);
         Positionable p = pm.get(e);
 
         Vector2 vt = m.lastVelocity.cpy().scl(accumulator);
-        float halfTSquared = 0.5f * (float)Math.pow(accumulator, 2);
-        return p.lastPosition.cpy().add(vt).add(m.lastAcceleration.cpy().scl(halfTSquared));
+        return p.lastPosition.cpy().add(vt);
+    }
+
+    @Override
+    protected void end(){
+        shapeRenderer.end();
     }
 }

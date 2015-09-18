@@ -4,21 +4,20 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
+import com.constantinople.Constantinople;
 import com.constantinople.component.Positionable;
 import com.constantinople.component.Movable;
-import com.constantinople.util.AdaptiveIntervalSystem;
+import com.constantinople.util.ManualTriggerSystem;
+import com.constantinople.util.PhysicsStepSystem;
 
 @Wire
-public class PhysicsSystem extends AdaptiveIntervalSystem {
-
-    private final static float TIMESTEP = 1.0f/120.0f;
-    private final static float MAX_FRAMETIME = 0.25f;
+public class MovementSystem extends ManualTriggerSystem {
 
     private ComponentMapper<Positionable> pm;
     private ComponentMapper<Movable> vm;
 
-    public PhysicsSystem() {
-        super(Aspect.all(Positionable.class, Movable.class), TIMESTEP, MAX_FRAMETIME);
+    public MovementSystem() {
+        super(Aspect.all(Positionable.class, Movable.class));
     }
 
     @Override
@@ -28,10 +27,7 @@ public class PhysicsSystem extends AdaptiveIntervalSystem {
 
         position.lastPosition = position.position.cpy();
         movable.lastVelocity = movable.velocity.cpy();
-        movable.lastAcceleration = movable.acceleration.cpy();
-
-        movable.velocity.add(movable.acceleration);
-        position.position.mulAdd(movable.velocity, TIMESTEP);
+        position.position.mulAdd(movable.velocity, PhysicsStepSystem.STEP_TIME);
     }
 
 

@@ -5,36 +5,41 @@ import com.artemis.WorldConfiguration;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.utils.TimeUtils;
-import com.constantinople.system.PlayerInputSystem;
-import com.constantinople.system.PhysicsSystem;
-import com.constantinople.system.RenderingSystem;
-import com.constantinople.system.SpawningSystem;
+import com.constantinople.system.*;
+import com.constantinople.util.PhysicsStepSystem;
+import com.constantinople.util.SystemContainer;
 
 public class Constantinople extends ApplicationAdapter {
+
 
     World world;
     OrthographicCamera camera;
 
     @Override
-	public void create () {
+    public void create() {
         camera = new OrthographicCamera();
 
-        WorldConfiguration config = new WorldConfiguration()
-                .setSystem(new SpawningSystem())
-                .setSystem(new PhysicsSystem())
+        WorldConfiguration config = new WorldConfiguration();
+
+        SystemContainer physicsSubSystems = new SystemContainer(config)
+                .add(new PlayerMovementSystem())
+                .add(new MovementSystem());
+        PhysicsStepSystem physicsStepper = new PhysicsStepSystem(physicsSubSystems);
+
+        config.setSystem(new SpawningSystem())
+                .setSystem(physicsStepper)
                 .setSystem(new PlayerInputSystem())
                 .setSystem(new RenderingSystem(camera));
 
         world = new World(config);
     }
 
-	@Override
-	public void render () {
+    @Override
+    public void render() {
         world.setDelta(Gdx.graphics.getDeltaTime());
         world.process();
         Gdx.graphics.setTitle("FPS: " + Gdx.graphics.getFramesPerSecond());
-	}
+    }
 
     /**
      * Update the camera if the game screen is resized.

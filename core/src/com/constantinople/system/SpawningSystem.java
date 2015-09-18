@@ -22,7 +22,6 @@ public class SpawningSystem extends BaseSystem{
                 .build(world);
         Entity item2 = world.createEntity(playerArchetype);
         pm.get(item2).set(10, 10);
-        vm.get(item2).velocity.set(1,1);
     }
 
     @Override
