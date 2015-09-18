@@ -17,7 +17,7 @@ public class PlayerInputSystem extends EntityProcessingSystem{
     ComponentMapper<Movable> vm;
     ComponentMapper<Player> pm;
 
-    final static int rotationSpeed = 2;
+    final static int rotationSpeed = 1;
     final static int speedModifier = 100;
 
     final Vector2 left, right, up, down;

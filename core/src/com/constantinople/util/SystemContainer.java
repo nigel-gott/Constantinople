@@ -6,7 +6,7 @@ import com.artemis.WorldConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SystemContainer implements Steppable {
+public class SystemContainer{
     final List<BaseSystem> systems;
     private final WorldConfiguration worldConfiguration;
 
@@ -21,16 +21,11 @@ public class SystemContainer implements Steppable {
         return this;
     }
 
-    public void processSystems(){
+    public void process(){
         for(BaseSystem system : systems){
             if(system.isEnabled()) {
                 system.process();
             }
         }
-    }
-
-    @Override
-    public void step() {
-        processSystems();
     }
 }

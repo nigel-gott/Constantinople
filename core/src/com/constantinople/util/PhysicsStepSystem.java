@@ -8,12 +8,12 @@ public class PhysicsStepSystem extends BaseSystem{
     public final static float STEP_TIME = 1.0f/120.0f;
     private final static float MAX_FRAME_TIME = 0.25f;
 
-    private final Steppable toStep;
+    private final SystemContainer physicsSubSystems;
     private float accumulator;
 
 
-    public PhysicsStepSystem(Steppable toStep){
-        this.toStep = toStep;
+    public PhysicsStepSystem(SystemContainer physicsSubSystems){
+        this.physicsSubSystems = physicsSubSystems;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class PhysicsStepSystem extends BaseSystem{
 
         while(accumulator >= STEP_TIME){
             accumulator -= STEP_TIME;
-            toStep.step();
+            physicsSubSystems.process();
         }
     }
 
