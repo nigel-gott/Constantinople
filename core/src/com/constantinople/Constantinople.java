@@ -5,8 +5,9 @@ import com.artemis.WorldConfiguration;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.constantinople.system.ControlSystem;
-import com.constantinople.system.MovementSystem;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.constantinople.system.PlayerInputSystem;
+import com.constantinople.system.PhysicsSystem;
 import com.constantinople.system.RenderingSystem;
 import com.constantinople.system.SpawningSystem;
 
@@ -21,8 +22,8 @@ public class Constantinople extends ApplicationAdapter {
 
         WorldConfiguration config = new WorldConfiguration()
                 .setSystem(new SpawningSystem())
-                .setSystem(new MovementSystem())
-                .setSystem(new ControlSystem())
+                .setSystem(new PhysicsSystem())
+                .setSystem(new PlayerInputSystem())
                 .setSystem(new RenderingSystem(camera));
 
         world = new World(config);
@@ -32,6 +33,7 @@ public class Constantinople extends ApplicationAdapter {
 	public void render () {
         world.setDelta(Gdx.graphics.getDeltaTime());
         world.process();
+        Gdx.graphics.setTitle("FPS: " + Gdx.graphics.getFramesPerSecond());
 	}
 
     /**

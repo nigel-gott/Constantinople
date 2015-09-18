@@ -10,6 +10,9 @@ public class DesktopLauncher {
 		config.title = "Constantinople";
         config.width = 1440;
         config.height = 900;
+        config.backgroundFPS = 60;
+        config.foregroundFPS = 60;
+        config.vSyncEnabled = true;
 		new LwjglApplication(new Constantinople(), config);
 	}
 }
