@@ -7,13 +7,13 @@ import com.artemis.World;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 
-public abstract class AdaptiveIntervalEntityProcessingSystem extends EntitySystem{
+public abstract class AdaptiveIntervalSystem extends EntitySystem{
 
     private final float timestep, maxFrameTime;
     private Entity flyweight;
     private float accumulator;
 
-    public AdaptiveIntervalEntityProcessingSystem(Aspect.Builder aspect, float timestep, float maxFrameTime){
+    public AdaptiveIntervalSystem(Aspect.Builder aspect, float timestep, float maxFrameTime){
         super(aspect);
         this.timestep = timestep;
         this.maxFrameTime = maxFrameTime;
@@ -29,7 +29,7 @@ public abstract class AdaptiveIntervalEntityProcessingSystem extends EntitySyste
     protected void processSystem() {
         IntBag entities = getSubscription().getEntities();
 
-        float lastFrameTime = Math.min(Gdx.graphics.getRawDeltaTime(), maxFrameTime);
+        float lastFrameTime = Math.min(Gdx.graphics.getDeltaTime(), maxFrameTime);
         accumulator += lastFrameTime;
 
         int count = 0;
@@ -40,7 +40,7 @@ public abstract class AdaptiveIntervalEntityProcessingSystem extends EntitySyste
         }
         float timeStepsLeft = accumulator / timestep;
         if(count > 1) {
-            //System.out.println("MultiStep of " + count + " with remainder " + (100*timeStepsLeft) + "%");
+            System.out.println("MultiStep of " + count + " with remainder " + (100*timeStepsLeft) + "%");
         }
 
     }

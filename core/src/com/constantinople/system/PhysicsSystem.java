@@ -4,14 +4,12 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.constantinople.component.Positionable;
 import com.constantinople.component.Movable;
-import com.constantinople.util.AdaptiveIntervalEntityProcessingSystem;
+import com.constantinople.util.AdaptiveIntervalSystem;
 
 @Wire
-public class PhysicsSystem extends AdaptiveIntervalEntityProcessingSystem {
+public class PhysicsSystem extends AdaptiveIntervalSystem {
 
     private final static float TIMESTEP = 1.0f/120.0f;
     private final static float MAX_FRAMETIME = 0.25f;

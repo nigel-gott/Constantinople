@@ -46,9 +46,9 @@ public class RenderingSystem extends EntityProcessingSystem{
         Positionable position = pm.get(e);
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        //shapeRenderer.circle(position.position.x, position.position.y, 10);
+        shapeRenderer.circle(position.position.x, position.position.y, 10);
         shapeRenderer.end();
-        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.setColor(Color.BLUE);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         Vector2 interpolatedPosition = interpolatePosition(e);
         shapeRenderer.circle(interpolatedPosition.x, interpolatedPosition.y, 10);
@@ -59,8 +59,9 @@ public class RenderingSystem extends EntityProcessingSystem{
         float accumulator = physicsSystem.getAccumulator();
         Movable m = mm.get(e);
         Positionable p = pm.get(e);
-        Vector2 interpolatedVelocity = m.lastVelocity.cpy().scl(accumulator);
-        return p.lastPosition.cpy().add(interpolatedVelocity).add(m.lastAcceleration.cpy().scl(0.5f * accumulator * accumulator));
 
+        Vector2 vt = m.lastVelocity.cpy().scl(accumulator);
+        float halfTSquared = 0.5f * (float)Math.pow(accumulator, 2);
+        return p.lastPosition.cpy().add(vt).add(m.lastAcceleration.cpy().scl(halfTSquared));
     }
 }
