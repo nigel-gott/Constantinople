@@ -20,19 +20,13 @@ public class PlayerInputSystem extends EntityProcessingSystem{
     final static int rotationSpeed = 1;
     final static int speedModifier = 100;
 
-    final Vector2 left, right, up, down;
     int rotationDelta;
     int speed;
-
 
     private boolean changed;
 
     public PlayerInputSystem(){
         super(Aspect.all(Player.class));
-        left = new Vector2(-1,0);
-        right = new Vector2(1,0);
-        up = new Vector2(0,1);
-        down = new Vector2(0,-1);
 
         rotationDelta = 0;
         speed = 0;
@@ -79,11 +73,11 @@ public class PlayerInputSystem extends EntityProcessingSystem{
         return changed;
     }
 
-    @Override
-    protected void process(Entity e) {
-        Player p = pm.get(e);
-        p.rotationSpeed = rotationDelta;
-        p.speed = speed;
+        @Override
+        protected void process(Entity e) {
+            Player p = pm.get(e);
+            p.rotationSpeed = rotationDelta;
+            p.speed = speed;
         changed = false;
     }
 

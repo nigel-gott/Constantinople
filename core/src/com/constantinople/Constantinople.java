@@ -27,8 +27,8 @@ public class Constantinople extends ApplicationAdapter {
         PhysicsStepSystem physicsStepper = new PhysicsStepSystem(physicsSubSystems);
 
         config.setSystem(new SpawningSystem())
-                .setSystem(physicsStepper)
                 .setSystem(new PlayerInputSystem())
+                .setSystem(physicsStepper)
                 .setSystem(new RenderingSystem(camera));
 
         world = new World(config);

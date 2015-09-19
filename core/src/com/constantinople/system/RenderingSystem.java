@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.constantinople.component.Bounds;
 import com.constantinople.component.Positionable;
 import com.constantinople.component.Movable;
 import com.constantinople.util.PhysicsStepSystem;
@@ -22,11 +23,12 @@ public class RenderingSystem extends EntityProcessingSystem{
 
     private ComponentMapper<Positionable> pm;
     private ComponentMapper<Movable> mm;
+    private ComponentMapper<Bounds> bm;
 
     private PhysicsStepSystem physicsStepSystem;
 
     public RenderingSystem(OrthographicCamera camera) {
-        super(Aspect.all(Positionable.class, Movable.class));
+        super(Aspect.all(Positionable.class, Movable.class, Bounds.class));
         this.camera = camera;
         this.shapeRenderer = new ShapeRenderer();
     }
@@ -47,7 +49,8 @@ public class RenderingSystem extends EntityProcessingSystem{
     @Override
     protected void process(Entity e) {
         Vector2 interpolatedPosition = interpolatePosition(e);
-        shapeRenderer.circle(interpolatedPosition.x, interpolatedPosition.y, 10);
+        int radius = bm.get(e).radius;
+        shapeRenderer.circle(interpolatedPosition.x, interpolatedPosition.y, radius);
     }
 
     private Vector2 interpolatePosition(Entity e){
