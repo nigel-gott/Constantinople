@@ -29,32 +29,25 @@ public class CollisionSystem extends DualEntityProcessingSystem{
             return;
         }
 
-        Vector2 aPos = pm.get(a).get();
+        Vector2 aPos = pm.get(a).position;
         int aRadius = bm.get(a).radius;
         Vector2 aVel = mm.get(a).velocity;
-        Vector2 bPos = pm.get(b).get();
+        Vector2 bPos = pm.get(b).position;
         int bRadius = bm.get(b).radius;
         Vector2 bVel = mm.get(b).velocity;
 
-        Vector2 collision = aPos.sub(bPos);
+        Vector2 collision = aPos.cpy().sub(bPos);
         float distance = collision.len();
-        if(distance > aRadius + bRadius){
+        float overlap = aRadius + bRadius - distance;
+        if(overlap <= 0){
             return;
         }
 
-        if(distance == 0){
-            collision = new Vector2(1.0f, 0.0f);
-        }
+        System.out.println(overlap);
 
         collision = collision.nor();
-        float aci = aVel.dot(collision);
-        float bci = bVel.dot(collision);
-
-        float acf = bci;
-        float bcf = aci;
-
-        aVel.mulAdd(collision, acf - aci);
-        bVel.mulAdd(collision, bcf - bci);
+        aPos.mulAdd(collision, overlap / 2);
+        bPos.mulAdd(collision, - overlap / 2);
 
     }
 
