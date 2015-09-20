@@ -73,6 +73,9 @@ project(":core") {
         // Artemis-odb annotation processor (see https://github.com/junkdog/artemis-odb/wiki/EntityFactory)
         provided "net.onedaybeard.artemis:artemis-odb-processor:$artemisVersion"
 
+
+        compile "net.mostlyoriginal.artemis-odb:contrib-core:1.0.0"
+        compile "net.mostlyoriginal.artemis-odb:contrib-eventbus:1.0.0"
     }
 }
 

@@ -12,4 +12,12 @@ public class Movable extends Component {
         velocity = new Vector2(0,0);
         lastVelocity = velocity.cpy();
     }
+
+    public Vector2 get() {
+        return velocity.cpy();
+    }
+
+    public void set(float x, float y) {
+        velocity.set(x,y);
+    }
 }

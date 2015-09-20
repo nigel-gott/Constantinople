@@ -28,7 +28,8 @@ public class SpawningSystem extends BaseSystem{
 
         Entity player = world.createEntity(objectArchetype);
         player.edit().create(Player.class);
-        pm.get(player).set(10, 10);
+        pm.get(player).set(250, 250);
+        vm.get(player).set(15,15);
         bm.get(player).radius = 15;
 
     }

@@ -22,6 +22,7 @@ public class Constantinople extends ApplicationAdapter {
         WorldConfiguration config = new WorldConfiguration();
 
         SystemContainer physicsSubSystems = new SystemContainer(config)
+                .add(new CollisionSystem())
                 .add(new PlayerMovementSystem())
                 .add(new MovementSystem());
         PhysicsStepSystem physicsStepper = new PhysicsStepSystem(physicsSubSystems);

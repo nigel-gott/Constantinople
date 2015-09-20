@@ -14,4 +14,7 @@ public class Positionable extends Component {
         lastPosition = position.cpy();
     }
 
+    public Vector2 get() {
+        return position.cpy();
+    }
 }
